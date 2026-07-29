@@ -1,3 +1,4 @@
+import ExpenseForm from './components/ExpenseForm';
 import { useState } from 'react';
 import ExpenseRow from './components/ExpenseRow';
 import './App.css';
@@ -18,9 +19,7 @@ function App() {
     <div className="app-container">
       <h1>Expense Tracker</h1>
       <h2>Total Spent: ${total}</h2>
-       <button onClick={() => addExpense({ category: "Test", description: "Sample item", amount: 10, date: "2026-07-29" })}>
-        Add Test Expense
-      </button>
+       <ExpenseForm onAdd={addExpense} />
       {expenses.map(exp => (
         <ExpenseRow key={exp.id} expense={exp} />
       ))}
