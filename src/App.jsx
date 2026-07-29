@@ -1,8 +1,9 @@
-import SpendingChart from './components/SpendingChart';
-import ExpenseForm from './components/ExpenseForm';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import { useState } from 'react';
-import ExpenseRow from './components/ExpenseRow';
 import './App.css';
+import Dashboard from './pages/Dashboard';
+import AddExpensePage from './pages/AddExpensePage';
+import InsightsPage from './pages/InsightsPage';
 
 const initialExpenses = [
   { id: 1, category: "Food", description: "Groceries", amount: 25, date: "2026-07-27" },
@@ -24,35 +25,37 @@ function App() {
     acc[exp.category] = (acc[exp.category] || 0) + exp.amount;
     return acc;
   }, {});
-    const chartData = Object.entries(categoryTotals).map(([name, value]) => ({
-  name,
-  value,
-}));
+
+  const chartData = Object.entries(categoryTotals).map(([name, value]) => ({ name, value }));
 
   function addExpense(newExpense) {
     setExpenses([...expenses, { ...newExpense, id: Date.now() }]);
   }
 
   return (
-    <div className="app-container">
-      <h1>Expense Tracker</h1>
-      <h2>Total Spent: ${total}</h2>
-      <ExpenseForm onAdd={addExpense} />
+    <BrowserRouter>
+      <div className="app-container">
+        <h1>Expense Tracker</h1>
 
-      <select value={filterCategory} onChange={e => setFilterCategory(e.target.value)}>
-        <option>All</option>
-        <option>Food</option>
-        <option>Transport</option>
-        <option>Bills</option>
-        <option>Other</option>
-      </select>
-    
-      {filteredExpenses.map(exp => (
-        <ExpenseRow key={exp.id} expense={exp} />
-      ))}
-      <h2>Spending Breakdown</h2>
-<SpendingChart data={chartData} />
-    </div>
+        <nav>
+          <Link to="/">Dashboard</Link> | <Link to="/add">Add Expense</Link> | <Link to="/insights">Insights</Link>
+        </nav>
+
+        <Routes>
+          <Route path="/" element={
+            <Dashboard
+              expenses={expenses}
+              filteredExpenses={filteredExpenses}
+              total={total}
+              filterCategory={filterCategory}
+              setFilterCategory={setFilterCategory}
+            />
+          } />
+          <Route path="/add" element={<AddExpensePage addExpense={addExpense} />} />
+          <Route path="/insights" element={<InsightsPage chartData={chartData} />} />
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 }
 
