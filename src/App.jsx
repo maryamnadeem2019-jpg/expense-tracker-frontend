@@ -1,3 +1,4 @@
+import SpendingChart from './components/SpendingChart';
 import ExpenseForm from './components/ExpenseForm';
 import { useState } from 'react';
 import ExpenseRow from './components/ExpenseRow';
@@ -23,10 +24,10 @@ function App() {
     acc[exp.category] = (acc[exp.category] || 0) + exp.amount;
     return acc;
   }, {});
-    console.log(categoryTotals);
-
-
-  console.log(categoryTotals);
+    const chartData = Object.entries(categoryTotals).map(([name, value]) => ({
+  name,
+  value,
+}));
 
   function addExpense(newExpense) {
     setExpenses([...expenses, { ...newExpense, id: Date.now() }]);
@@ -49,6 +50,8 @@ function App() {
       {filteredExpenses.map(exp => (
         <ExpenseRow key={exp.id} expense={exp} />
       ))}
+      <h2>Spending Breakdown</h2>
+<SpendingChart data={chartData} />
     </div>
   );
 }

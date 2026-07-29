@@ -15,8 +15,8 @@ body {
 }
 
 h1 {
-  color: #2d3436;
-  font-size: 28px;
+  color: #e9eeef;
+  font-size: 35px;
   margin-bottom: 20px;
 }
 
@@ -34,8 +34,8 @@ h1 {
 
 .expense-row span:first-child {
   font-weight: 600;
-  color: #010f1a;
-  min-width: 90px;
+  color: #edf0f1;
+  min-width: 120px;
 }
 
 .expense-row span:nth-child(2) {
