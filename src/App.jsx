@@ -11,16 +11,42 @@ const initialExpenses = [
 
 function App() {
   const [expenses, setExpenses] = useState(initialExpenses);
+  const [filterCategory, setFilterCategory] = useState('All');
+
   const total = expenses.reduce((sum, exp) => sum + exp.amount, 0);
+
+  const filteredExpenses = filterCategory === 'All'
+    ? expenses
+    : expenses.filter(exp => exp.category === filterCategory);
+
+  const categoryTotals = expenses.reduce((acc, exp) => {
+    acc[exp.category] = (acc[exp.category] || 0) + exp.amount;
+    return acc;
+  }, {});
+    console.log(categoryTotals);
+
+
+  console.log(categoryTotals);
+
   function addExpense(newExpense) {
-  setExpenses([...expenses, { ...newExpense, id: Date.now() }]);
-}
+    setExpenses([...expenses, { ...newExpense, id: Date.now() }]);
+  }
+
   return (
     <div className="app-container">
       <h1>Expense Tracker</h1>
       <h2>Total Spent: ${total}</h2>
-       <ExpenseForm onAdd={addExpense} />
-      {expenses.map(exp => (
+      <ExpenseForm onAdd={addExpense} />
+
+      <select value={filterCategory} onChange={e => setFilterCategory(e.target.value)}>
+        <option>All</option>
+        <option>Food</option>
+        <option>Transport</option>
+        <option>Bills</option>
+        <option>Other</option>
+      </select>
+    
+      {filteredExpenses.map(exp => (
         <ExpenseRow key={exp.id} expense={exp} />
       ))}
     </div>
