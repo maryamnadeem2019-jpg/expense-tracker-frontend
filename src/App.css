@@ -1,59 +1,93 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
-  background-color: #b783d7;
-  font-family: 'Segoe UI', Arial, sans-serif;
   margin: 0;
-  padding: 40px 20px;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background-color: #f4f6f8;
 }
 
-.app-container {
-  max-width: 800px;
-  margin: 0 auto;
-  background: rgb(7, 72, 116);
-  border-radius: 20px;
-  padding: 24px 32px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-}
-
-h1 {
-  color: #e9eeef;
-  font-size: 35px;
-  margin-bottom: 20px;
-}
-
-.expense-row {
+.layout {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px 0;
-  border-bottom: 1px solid #eee;
+  min-height: 100vh;
 }
 
-.expense-row:last-child {
-  border-bottom: none;
+.sidebar {
+  width: 220px;
+  background-color: #b5551c;
+  color: white;
+  padding: 24px 16px;
 }
 
-.expense-row span:first-child {
-  font-weight: 600;
-  color: #edf0f1;
-  min-width: 120px;
+.brand {
+  font-size: 20px;
+  margin-bottom: 30px;
 }
 
-.expense-row span:nth-child(2) {
-  color: #cad4d8;
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.main-content {
+  flex: 1;
+  padding: 32px 40px;
+}
+
+.page-title {
+  color: #b5551c;
+  font-size: 26px;
+  margin-bottom: 4px;
+}
+
+.page-subtitle {
+  color: #888;
+  margin-bottom: 24px;
+}
+
+.stats-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 12px;
+  padding: 18px 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
   flex: 1;
 }
 
-.expense-row span:nth-child(3) {
-  font-weight: bold;
-  color: #e5ebec;
+.stat-label {
+  color: #999;
+  font-size: 13px;
+  margin-bottom: 6px;
 }
 
-.expense-row span:last-child {
-  color: #b2bec3;
-  font-size: 13px;
+.stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #2d3436;
 }
-h2 {
-  color: #8672e0;
-  font-size: 35px;
-  margin-bottom: 20px;
+
+.chart-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
 }
