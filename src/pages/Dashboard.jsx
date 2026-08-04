@@ -29,7 +29,7 @@ function Dashboard({ expenses, filteredExpenses, total, categoryTotals, filterCa
         </select>
 
         {filteredExpenses.map(exp => (
-          <ExpenseRow key={exp.id} expense={exp} />
+          <ExpenseRow key={exp._id} expense={exp} />
         ))}
       </div>
     </div>

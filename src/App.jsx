@@ -4,14 +4,16 @@ import Dashboard from './pages/Dashboard';
 import AddExpensePage from './pages/AddExpensePage';
 import InsightsPage from './pages/InsightsPage';
 import { useState, useEffect } from 'react';
+
 function App() {
   const [expenses, setExpenses] = useState([]);
 
-useEffect(() => {
-  fetch('http://localhost:8000/expenses')
-    .then(res => res.json())
-    .then(data => setExpenses(data));
-}, []);
+  useEffect(() => {
+    fetch('http://localhost:8000/expenses')
+      .then(res => res.json())
+      .then(data => setExpenses(data));
+  }, []);
+
   const [filterCategory, setFilterCategory] = useState('All');
 
   const total = expenses.reduce((sum, exp) => sum + exp.amount, 0);
@@ -28,14 +30,18 @@ useEffect(() => {
   const chartData = Object.entries(categoryTotals).map(([name, value]) => ({ name, value }));
 
   function addExpense(newExpense) {
-  fetch('http://localhost:8000/expenses', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ ...newExpense, id: Date.now() }),
-  })
-    .then(res => res.json())
-    .then(created => setExpenses([...expenses, created]));
-}
+    fetch('http://localhost:8000/expenses', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newExpense),
+    })
+      .then(res => res.json())
+      .then(() => {
+        fetch('http://localhost:8000/expenses')
+          .then(res => res.json())
+          .then(data => setExpenses(data));
+      });
+  }
 
   return (
     <BrowserRouter>
