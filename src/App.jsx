@@ -6,13 +6,21 @@ import InsightsPage from './pages/InsightsPage';
 import { useState, useEffect } from 'react';
 
 function App() {
-  const [expenses, setExpenses] = useState([]);
+const [expenses, setExpenses] = useState([]);
+const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    fetch('http://localhost:8000/expenses')
-      .then(res => res.json())
-      .then(data => setExpenses(data));
-  }, []);
+useEffect(() => {
+  fetch('http://localhost:8000/expenses')
+    .then(res => res.json())
+    .then(data => {
+      setExpenses(data);
+      setIsLoading(false);
+    })
+    .catch(err => {
+      console.error('Failed to load expenses:', err);
+      setIsLoading(false);
+    });
+}, []);
 
   const [filterCategory, setFilterCategory] = useState('All');
 
@@ -30,18 +38,36 @@ function App() {
   const chartData = Object.entries(categoryTotals).map(([name, value]) => ({ name, value }));
 
   function addExpense(newExpense) {
-    fetch('http://localhost:8000/expenses', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newExpense),
+  fetch('http://localhost:8000/expenses', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(newExpense),
+  })
+    .then(res => res.json())
+    .then(() => {
+      fetch('http://localhost:8000/expenses')
+        .then(res => res.json())
+        .then(data => setExpenses(data));
     })
-      .then(res => res.json())
-      .then(() => {
-        fetch('http://localhost:8000/expenses')
-          .then(res => res.json())
-          .then(data => setExpenses(data));
-      });
-  }
+    .catch(err => {
+      console.error('Failed to add expense:', err);
+      alert('Something went wrong adding your expense. Please try again.');
+    });
+}
+function deleteExpense(id) {
+  fetch(`http://localhost:8000/expenses/${id}`, {
+    method: 'DELETE',
+  })
+    .then(() => {
+      fetch('http://localhost:8000/expenses')
+        .then(res => res.json())
+        .then(data => setExpenses(data));
+    })
+    .catch(err => {
+      console.error('Failed to delete expense:', err);
+      alert('Something went wrong deleting this expense.');
+    });
+}
 
   return (
     <BrowserRouter>
@@ -65,6 +91,8 @@ function App() {
                 categoryTotals={categoryTotals}
                 filterCategory={filterCategory}
                 setFilterCategory={setFilterCategory}
+                isLoading={isLoading}
+                deleteExpense={deleteExpense}
               />
             } />
             <Route path="/add" element={<AddExpensePage addExpense={addExpense} />} />

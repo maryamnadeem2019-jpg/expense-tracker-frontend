@@ -1,6 +1,6 @@
 import ExpenseRow from '../components/ExpenseRow';
 
-function Dashboard({ expenses, filteredExpenses, total, categoryTotals, filterCategory, setFilterCategory }) {
+function Dashboard({ expenses, filteredExpenses, total, categoryTotals, filterCategory, setFilterCategory, isLoading,deleteExpense }) {
   const topCategory = Object.entries(categoryTotals).sort((a, b) => b[1] - a[1])[0];
 
   return (
@@ -28,9 +28,17 @@ function Dashboard({ expenses, filteredExpenses, total, categoryTotals, filterCa
           <option>Other</option>
         </select>
 
-        {filteredExpenses.map(exp => (
-          <ExpenseRow key={exp._id} expense={exp} />
-        ))}
+        {isLoading ? (
+          <p style={{ textAlign: 'center', padding: '20px' }}>Loading your expenses...</p>
+        ) : filteredExpenses.length === 0 ? (
+          <p style={{ color: '#999', textAlign: 'center', padding: '20px' }}>
+            No expenses yet — add your first one to get started!
+          </p>
+        ) : (
+         filteredExpenses.map(exp => (
+  <ExpenseRow key={exp._id} expense={exp} onDelete={deleteExpense} />
+))
+        )}
       </div>
     </div>
   );

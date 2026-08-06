@@ -7,14 +7,19 @@ function ExpenseForm({ onAdd }) {
   const [date, setDate] = useState('');
 
   function handleSubmit(e) {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (!description || !amount || !date) {
-      alert('Please fill in all fields');
-      return;
-    }
+  if (!description || !amount || !date) {
+    alert('Please fill in all fields');
+    return;
+  }
 
-    onAdd({
+  if (Number(amount) <= 0) {
+    alert('Amount must be greater than 0');
+    return;
+  }
+
+  onAdd({
       category,
       description,
       amount: Number(amount),
